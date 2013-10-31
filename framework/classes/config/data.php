@@ -206,7 +206,14 @@ class Config_Data
 
     public static function canUpdateMetadata()
     {
-        if (\Config::get('novius-os.enabled_types.metadata', true)) {
+        \Config::load('migrations', true);
+        $metadata_enabled = \Config::get('migrations.enabled_types.metadata', null);
+        if ($metadata_enabled === null) {
+            $metadata_enabled = \Config::get('novius-os.enabled_types.metadata', true);
+        } else {
+            \Log::deprecated('migrations.enabled_types.metadata key is deprecated, use novius-os.enabled_types.metadata instead.', 'Chiba.2');
+        }
+        if ($metadata_enabled) {
             if (is_writeable(APPPATH.'metadata')) {
                 return true;
             } else {
