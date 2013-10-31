@@ -21,7 +21,7 @@ class Version_0_2 extends \Nos\Migration
             return true;
         }
 
-        if ($this->canUpdateMetadata()) {
+        if (\Nos\Config_Data::canUpdateMetadata()) {
             // Add new namespaces before everything else, or run into 'Fatal error: class Nos\Page\Model_Page not found!'
             $app_namespaces = \Config::load(APPPATH.'metadata/app_namespaces.php', 'data::app_namespaces', true, true) +
                 array(

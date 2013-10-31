@@ -14,7 +14,7 @@ class New_Dependencies_Configuration extends \Nos\Migration
 {
     public function up()
     {
-        if ($this->canUpdateMetadata()) {
+        if (\Nos\Config_Data::canUpdateMetadata()) {
             $config = \Nos\Config_Data::load('app_dependencies');
             $has_changed = false;
             foreach ($config as &$dependencies) {

@@ -65,7 +65,7 @@ class Module extends Fuel\Core\Module
             // But metadata exists, so the folder was deleted
             if ($application->is_installed()) {
                 // Cleanup the cached metadata
-                if (\Nos\Migration::canUpdateMetadata()) {
+                if (\Nos\Config_Data::canUpdateMetadata()) {
                     $application->uninstall();
                 }
             }

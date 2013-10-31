@@ -10,6 +10,26 @@
 
 class Log extends Fuel\Core\Log
 {
+    /**
+     * Initialize the class
+     */
+    public static function _init()
+    {
+        parent::_init();
+        $filepath = \Config::get('log_path').date('Y/m').'/';
+        $filename = $filepath.date('d').'.php';
+        // load the file config
+        \Config::load('file', true);
+
+        static::$monolog = new \Nos\Monolog_Logger('fuelphp');
+
+        // create the streamhandler, and activate the handler
+        $stream = new \Monolog\Handler\StreamHandler($filename, \Monolog\Logger::DEBUG);
+        $formatter = new \Monolog\Formatter\LineFormatter("%level_name% - %datetime% --> %message%".PHP_EOL, "Y-m-d H:i:s");
+        $stream->setFormatter($formatter);
+        static::$monolog->pushHandler($stream);
+    }
+
     public static function deprecated($message, $since = null)
     {
         $debug_backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
@@ -33,5 +53,9 @@ class Log extends Fuel\Core\Log
         }
         $log .= ': '.$message;
         logger(\Fuel::L_WARNING, $log);
+    }
+
+    public static function logException($e, $prefix = '') {
+        \Log::error($prefix.$e->getCode().' - '.$e->getMessage().' in '.$e->getFile().' on line '.$e->getLine());
     }
 }

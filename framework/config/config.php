@@ -273,6 +273,12 @@ return array(
             NOSPATH,
             COREPATH,
         ),
+
+        'backtrace_log_threshold' => Fuel::L_ERROR,
+
+        'enabled_types' => array(
+            'metadata' => true,
+        ),
     ),
 );
 

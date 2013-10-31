@@ -99,7 +99,15 @@ class Config_Data
     {
         \Config::set('data::'.$name, $data);
         list($file, $callback) = static::getFile($name);
-        return \Config::save($file, $data);
+        try {
+            return \Config::save($file, $data);
+        } catch (\FileAccessException $e) {
+            \Log::logException($e, 'Config_Data ('.$file.') - ');
+            if (static::canUpdateMetadata()) {
+                throw $e;
+            }
+            return false;
+        }
     }
 
     /**
@@ -193,6 +201,19 @@ class Config_Data
                     // Application not found: don't translate
                 }
             }
+        }
+    }
+
+    public static function canUpdateMetadata()
+    {
+        if (\Config::get('novius-os.enabled_types.metadata', true)) {
+            if (is_writeable(APPPATH.'metadata')) {
+                return true;
+            } else {
+                throw new \Exception('Metadata folder is not writeable.');
+            }
+        } else {
+            return false;
         }
     }
 }

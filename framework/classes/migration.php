@@ -52,17 +52,14 @@ class Migration
 
     }
 
+
+    /**
+     * @deprecated Use deleteFromDisk() method instead
+     */
     public static function canUpdateMetadata()
     {
-        if (\Config::get('migrations.enabled_types.metadata', true)) {
-            if (is_writeable(APPPATH.'metadata')) {
-                return true;
-            } else {
-                throw new \Exception('Metadata folder is not writeable.');
-            }
-        } else {
-            return false;
-        }
+        \Log::deprecated('\Nos\Migration::canUpdateMetadata() is deprecated, use \Nos\Config_Data::canUpdateMetadata() instead.', 'Chiba.2');
+        return \Nos\Config_Data::canUpdateMetadata();
     }
 
     public static function getCompleteSql()

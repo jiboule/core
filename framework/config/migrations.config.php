@@ -23,7 +23,4 @@ return array(
     ),
     'folder' => 'migrations/',
     'table' => 'nos_migration',
-    'enabled_types' => array(
-        'metadata' => true,
-    )
 );
