@@ -103,7 +103,7 @@ class Config_Data
             return \Config::save($file, $data);
         } catch (\FileAccessException $e) {
             \Log::logException($e, 'Config_Data ('.$file.') - ');
-            if (static::canUpdateMetadata()) {
+            if (!isset(static::$metadata_files[$name]) || static::canUpdateMetadata()) {
                 throw $e;
             }
             return false;
