@@ -25,7 +25,7 @@ class File extends Fuel\Core\File
     {
         $methods = array(
             function ($target, $link, $is_file) {
-                return @symlink($target, $link);
+                return function_exists('symlink') && @symlink($target, $link);
             },
             function ($target, $link, $is_file) {
                 if (OS_WIN) {
@@ -45,6 +45,15 @@ class File extends Fuel\Core\File
                     $command .= '/D ';
                 }
                 $command .= escapeshellarg($link).' '.escapeshellarg($target);
+                \exec($command);
+                return \File::is_link($link);
+            }
+            function ($target, $link, $is_file) {
+                if (!OS_WIN) {
+                    return false;
+                }
+                $junction_dir = \Config::get('junction_dir', '');
+                $command = $junction_dir.'junction '.escapeshellarg($link).' '.escapeshellarg($target);
                 \exec($command);
                 return \File::is_link($link);
             }

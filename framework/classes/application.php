@@ -638,10 +638,10 @@ class Application
         $private =  static::get_application_path($this->folder).DS.$folder;
         $public = DOCROOT.$folder.DS.'apps'.DS.$this->folder;
         if (file_exists($private)) {
-            return \File::is_link($public) && in_array(readlink($public), array(
+            return \File::is_link($public) && (!function_exists('readlink') || in_array(readlink($public), array(
                 $private,
                 Tools_File::relativePath(dirname($public), $private)
-            ));
+            )));
         }
 
         return !\File::is_link($public);
