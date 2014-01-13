@@ -47,7 +47,7 @@ class File extends Fuel\Core\File
                 $command .= escapeshellarg($link).' '.escapeshellarg($target);
                 \exec($command);
                 return \File::is_link($link);
-            }
+            },
             function ($target, $link, $is_file) {
                 if (!OS_WIN) {
                     return false;
@@ -56,7 +56,7 @@ class File extends Fuel\Core\File
                 $command = $junction_dir.'junction '.escapeshellarg($link).' '.escapeshellarg($target);
                 \exec($command);
                 return \File::is_link($link);
-            }
+            },
         );
 
         if ($is_file === null) {
